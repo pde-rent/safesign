@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrat de Location Individuel</title>
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <!-- Optional: Custom overrides or print styles -->
+  <style>
+    body,
+    html {
+      font-family: 'Times New Roman', Times, serif;
+      /* Maintain legal doc font */
+      font-size: 12pt;
+      background-color: white !important;
+      /* Explicit light theme */
+      color: black !important;
+      /* Explicit light theme */
+    }
+
+    body {
+      margin: .5in;
+      /* Standard paper margin */
+    }
+
+    .container {
+      max-width: 210mm;
+      /* A4 width approx */
+      margin: 0 auto;
+      /* Center container if viewport wider */
+      width: 100%;
+      background-color: white;
+      /* Ensure container is white */
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Times New Roman', Times, serif;
+      color: black !important;
+    }
+
+    h2 {
+      border-bottom: 1px solid #dbdbdb;
+      padding-bottom: 0.3em;
+      margin-bottom: 1em;
+    }
+
+    /* Increase main section title size */
+    h2.title.is-5 { font-size: 1.4rem; /* Slightly larger than default is-5 */ }
+    /* Keep h3 size for first level subsections */
+    h3.title.is-6 { font-size: 1.1rem; /* Slightly larger than default is-6 */ }
+
+    /* Adjust h3 margins for better spacing globally */
+    h3.title.is-6 {
+        margin-top: 1.5rem !important; /* More space above */
+        margin-bottom: 0.5rem !important; /* Less space below */
+    }
+
+    .field label.label {
+      font-weight: bold;
+      font-size: inherit;
+      color: black;
+      margin-bottom: 0;
+    }
+
+    /* Make labels bold like dt */
+    .field .input,
+    .field .textarea {
+      border: none;
+      border-bottom: 1px dotted #7a7a7a;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 0.1em 0.2em;
+      height: auto;
+      /* Adjust height automatically */
+      line-height: inherit;
+      font-size: inherit;
+      font-family: inherit;
+      color: black !important;
+      background: transparent;
+      display: inline-block;
+      /* Revert to inline-block for better width control */
+      width: auto;
+      /* Default to auto */
+      min-width: 50px;
+      /* Minimum width */
+      vertical-align: baseline;
+    }
+
+    .field.is-horizontal .input {
+      display: inline-block;
+      /* Restore block for horizontal layout fields */
+      width: auto;
+      /* Allow inputs in horizontal fields to size naturally or be sized */
+      min-width: 150px;
+      /* Give a bit more space */
+    }
+
+    .field-body>.field {
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+
+    .field-body>.field>.control {
+      width: 100%;
+    }
+
+    .field-body>.field>.control>.input,
+    .textarea {
+      width: 100% !important;
+      /* Make inputs/textareas fill the expanding control */
+      display: block;
+      min-width: 0;
+      /* Remove min-width here, let it fill */
+    }
+
+    .field-body>.field.has-addons .input {
+      width: auto;
+      display: inline-block;
+      min-width: 50px;
+      /* Keep min-width for addon inputs */
+    }
+
+    .textarea {
+      width: 100%;
+      /* Ensure textareas take full width */
+      display: block;
+      /* Inherits border, color, background etc from .field .textarea */
+    }
+
+    /* Adjust spacing for horizontal fields */
+    .field.is-horizontal {
+      margin-bottom: 0.3rem; /* Reduced margin */
+      display: flex; /* Ensure flex display is explicit */
+    }
+
+    .field-label {
+      flex-grow: 0; /* Prevent label from taking too much space */
+      flex-basis: auto; /* Allow label to size naturally */
+      margin-right: 0.5rem;
+      text-align: left;
+      white-space: nowrap;
+      padding-top: 0.375em;
+      /* Align label with input baseline better */
+      vertical-align: baseline !important; /* Align baseline */
+    }
+
+    .field-body {
+      flex-basis: 0;
+      flex-grow: 5; /* Allow body to take remaining space */
+      flex-shrink: 1;
+      display: flex; /* Ensure field-body is also flex */
+    }
+
+    .field-body .field .control {
+      width: auto; /* Let control size naturally */
+      background-color: white !important; /* Force white background */
+      color: black; /* Explicit black text */
+    }
+
+    .field-body .field.is-narrow .control {
+      width: auto;
+    }
+
+    /* Specific fix for number + unit */
+    .field.has-addons .control:not(:last-child) {
+      margin-right: 0;
+    }
+
+    .field.has-addons .input,
+    .field.has-addons .input:focus {
+      border-bottom-right-radius: 0;
+      border-right: none;
+      box-shadow: none;
+    }
+
+    /* Consolidate tag styling */
+    .tag {
+      border: none;
+      border-bottom: 1px dotted #7a7a7a;
+      box-shadow: none;
+      border-radius: 0;
+      background: transparent !important; /* Use important for bg override */
+      color: black !important; /* Use important for color override */
+      padding: 0.1em 0.2em;
+      height: auto;
+      vertical-align: baseline;
+      margin: 0;
+      display: inline-block;
+      line-height: inherit;
+      /* Remove specific addon tag styles as they are covered here */
+    }
+
+    /* Ensure checkboxes align well */
+    .checkbox input {
+      vertical-align: middle;
+      transform: scale(1.0);
+    }
+
+    .checkbox {
+      margin-right: 1em;
+      vertical-align: middle;
+    }
+
+    .content ul {
+      margin-left: 2em;
+    }
+
+    .signature-block {
+      text-align: center;
+      margin-top: 2em;
+    }
+
+    .signature-line {
+      border-bottom: 1px solid black;
+      width: 80%;
+      margin: 3em auto 0.5em auto;
+      display: block;
+    }
+
+    .signature-block .input {
+      border: none !important;
+      /* Remove border for signature name display */
+      text-align: center;
+      padding: 0;
+      /* Remove padding for readonly display */
+    }
+
+    .small-text {
+      font-size: 0.9em;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .table td,
+    .table th {
+      color: black !important;
+      border-color: #dbdbdb;
+      /* Use standard Bulma border color */
+      vertical-align: middle;
+      /* Align table cell content vertically */
+    }
+
+    @media print {
+      body { margin: 0.5in; font-size: 11pt; background-color: white !important; color: black !important; } /* Match screen margin, adjust font size */
+      h2 { page-break-before: auto; page-break-after: avoid; }
+      /* Avoid breaking tables, columns mid-way */
+      .table-container, .columns {
+          page-break-inside: avoid;
+      }
+      /* Adjust h3 margins for better spacing in print */
+      h3.title.is-6 {
+          margin-top: 1.5rem !important; /* More space above */
+          margin-bottom: 0.5rem !important; /* Less space below */
+      }
+
+      /* Ensure colors print correctly (minimal rule) */
+      .input, .textarea, .tag {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+      }
+      .no-print { display: none; }
+    }
+
+    header.box {
+      box-shadow: none;
+      border: 1px solid black;
+    }
+
+    /* Apply underline to block textareas within horizontal fields */
+    .field-body > .field > .control > .textarea {
+      /* This rule already sets width: 100% and display: block inherited earlier */
+      /* Base styles like underline come from .field .textarea */
+    }
+
+    /* Specific styling for inputs within the table in Section II */
+    section:nth-of-type(2) .table td .input:not([type="number"]):not([type="checkbox"]):not([type="radio"]) /* Target text inputs in Section II table */
+    {
+      border: none !important;
+      border-bottom: 1px dotted #7a7a7a !important; /* Force underline */
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      padding: 0.1em 0.2em !important;
+      height: auto !important;
+      line-height: inherit !important;
+      width: 100% !important; /* Make them full width */
+      color: black !important;
+      display: block !important; /* Ensure they take width */
+      vertical-align: baseline !important;
+    }
+
+    /* Force styling for textareas specifically in Section IX */
+    section:nth-of-type(9) .textarea {
+      border: none !important; /* Ensure no border */
+      border-bottom: 1px dotted #7a7a7a !important; /* Force underline */
+      box-shadow: none !important; /* Ensure no shadow */
+      border-radius: 0 !important; /* Ensure no radius */
+      padding: 0.1em 0.2em !important; /* Consistent padding */
+      height: auto !important; /* Auto height */
+      line-height: inherit !important; /* Inherit line height */
+      font-size: inherit !important; /* Inherit font size */
+      font-family: inherit !important; /* Inherit font family */
+      color: black !important; /* Force black text */
+      background: transparent !important; /* Force transparent background */
+      vertical-align: baseline !important; /* Align baseline */
+      width: 100% !important; /* Ensure full width */
+    }
+
+    /* Ensure the container for textareas in Section IX is also full width */
+    section:nth-of-type(9) .field > .control {
+        width: 100% !important;
+    }
+
+    /* Style for numbered/lettered sub-points labels in specific sections */
+    section:nth-of-type(4) .field-label .label, /* Section IV labels (1., 2., etc.) */
+    section:nth-of-type(5) .field > .label, /* Section V labels (A., B., C.) */
+    section:nth-of-type(9) .field-label .label, /* Section IX Plafonds labels */
+    section:nth-of-type(9) h3 + p /* Section IX Honoraires labels (1., 2.) */
+    {
+        font-size: 1em; /* Match base font size */
+        font-weight: normal; /* Less prominent */
+    }
+    section:nth-of-type(9) .field > .label.is-small /* Target nested labels in Section IX */
+    {
+      font-size: 0.9em;
+      font-weight: bold; /* Keep nested labels bold but small */
+    }
+
+    /* Reduce margin for paragraphs in footnotes */
+    section.footnotes p {
+      margin-bottom: 0.25rem; /* Tighter spacing */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container section">
+
+    <header class="box has-text-centered block">
+      <h1 class="title is-3 mb-4">Contrat de location individuel</h1>
+      <p class="is-6 mb-3">(Soumis au titre Ier bis de la loi du 6 juillet 1989 et portant modification de la
+        loi n° 86-1290 du 23 décembre 1986 – bail type conforme aux dispositions de la loi ALUR de 2014, mis en
+        application par le décret du 29 mai 2015)</p>
+      <p class="bold is-size-5">LOCAUX MEUBLES A USAGE D'HABITATION</p>
+    </header>
+
+    <section class="content small-text block">
+      <p>Modalités d'application du contrat type du décret du 29 mai 2015 : Le régime de droit commun en matière
+        de baux d'habitation est défini principalement par la loi n° 89-462 du 6 juillet 1989 tendant à
+        améliorer les rapports locatifs et portant modification de la loi n° 86-1290 du 23 décembre 1986.
+        L'ensemble de ces dispositions étant d'ordre public, elles s'imposent aux parties qui, en principe, ne
+        peuvent pas y renoncer.</p>
+    </section>
+
+    <form id="contractForm">
+      <section class="block">
+        <h2 class="title is-5">I. Désignation des parties</h2>
+        <p class="block">Le présent contrat est conclu entre les soussignés :</p>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Qualité du bailleur :</label>
+          </div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <label class="checkbox">
+                  <input type="radio" name="bailleurQualite" value="physique" checked> Personne
+                  physique
+                </label>
+                <label class="checkbox">
+                  <input type="radio" name="bailleurQualite" value="morale"> Personne morale
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Nom et prénom du bailleur :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="bailleurName" value="Paul de Renty"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Dénomination (si personne morale) :</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="bailleurDenomination" value="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Société civile constituée exclusivement
+              entre parents et alliés jusqu'au quatrième degré inclus :</label></div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <label class="checkbox"><input type="radio" name="societeCivile" value="oui">
+                  oui</label>
+                <label class="checkbox"><input type="radio" name="societeCivile" value="non" checked>
+                  non</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Adresse :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="bailleurAddress"
+                  value="25 rue Denis Papin, 41000 Blois"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Adresse email (facultatif) :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="email" name="bailleurEmail"
+                  value="paul.ed.de.renty@gmail.com"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="block">désigné (s) ci-après « le bailleur » ;</p>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Le cas échéant, représenté par un mandataire
+              :</label></div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <label class="checkbox"><input type="radio" name="mandataireRepresente" value="oui">
+                  oui</label>
+                <label class="checkbox"><input type="radio" name="mandataireRepresente" value="non" checked> non</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Nom et prénom du mandataire :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="mandataireName" value=""></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Dénomination (si personne morale) :</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="mandataireDenomination" value=""></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Adresse :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="mandataireAddress" value="">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Activité exercée :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="mandataireActivity" value="">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">N° et lieu de délivrance de la carte
+              professionnelle<sup>1</sup> :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="mandataireCard" value=""></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Le cas échéant, nom et adresse du garant
+              :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="garantDetails" value=""></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Nom et prénom du ou des locataires :</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="tenantName" value="Melek KILIC">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Adresse email (facultatif) :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="email" name="tenantEmail"
+                  value="kilic.melek0806@gmail.com"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="block">désigné(s) ci-après « le locataire » ;</p>
+        <p class="block">Il a été convenu ce qui suit :</p>
+      </section>
+      <!-- End of Section I -->
+
+      <section class="block">
+        <h2 class="title is-5">II. Objet du contrat</h2>
+        <p class="block">Le présent contrat a pour objet la location d'un logement ainsi déterminé :</p>
+
+        <h3 class="title is-6">A. Consistance du logement</h3>
+        <div class="table-container block">
+          <table class="table is-bordered is-narrow is-fullwidth">
+            <tbody>
+              <tr>
+                <td><strong>Adresse du logement</strong> [exemples : adresse / bâtiment / étage / porte
+                  etc.] :</td>
+                <td><input class="input" type="text" name="logementAddress"
+                    value="25 rue Denis Papin, 41000 Blois, lot 5 (parcelle cadastrale 000 DO 481)">
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Identifiant fiscal du logement :</strong></td>
+                <td><input class="input" type="text" name="logementFiscalId" value="410180165831"></td>
+              </tr>
+              <tr>
+                <td><strong>Type d'habitat, Immeuble :</strong></td>
+                <td>
+                  <label class="checkbox"><input type="checkbox" name="habitatType" value="collectif" checked>
+                    collectif</label>
+                  <label class="checkbox"><input type="checkbox" name="habitatType" value="individuel">
+                    individuel</label> /
+                  <label class="checkbox"><input type="checkbox" name="habitatPropriete" value="mono" checked> mono
+                    propriété</label>
+                  <label class="checkbox"><input type="checkbox" name="habitatPropriete" value="copro">
+                    copropriété</label>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Période de construction :</strong></td>
+                <td>
+                  <label class="checkbox"><input type="radio" name="constructionPeriode" value="<1949" checked> avant
+                    1949</label>
+                  <label class="checkbox"><input type="radio" name="constructionPeriode" value="1949-1974"> de 1949 à
+                    1974</label>
+                  <label class="checkbox"><input type="radio" name="constructionPeriode" value="1975-1989"> de 1975 à
+                    1989</label>
+                  <label class="checkbox"><input type="radio" name="constructionPeriode" value="1989-2005"> de 1989 à
+                    2005</label>
+                  <label class="checkbox"><input type="radio" name="constructionPeriode" value=">2005"> depuis
+                    2005</label>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Surface habitable privative :</strong></td>
+                <td>
+                  <div class="field has-addons">
+                    <div class="control"><input class="input" type="number" name="surfacePrivative" value="18"
+                        step="0.1"></div>
+                    <div class="control"><span>m2</span></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Surface habitable collective (approximative):</strong></td>
+                <td>
+                  <div class="field has-addons">
+                    <div class="control"><input class="input" type="number" name="surfaceCollective" value="80"
+                        step="0.1"></div>
+                    <div class="control"><span>m2</span></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Nombre de pièces principales (privatives + collectives) :</strong></td>
+                <td>
+                  <div class="field has-addons">
+                    <div class="control"><input class="input" type="number" name="piecesPrincipales" value="3" step="1"></div>
+                    <div class="control"><span>pièces</span></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Autres parties du logement :</strong></td>
+                <td>
+                  <div> <!-- Wrap checkboxes -->
+                    <label class="checkbox"><input type="checkbox" name="autresParties" value="grenier"> grenier</label>
+                    <label class="checkbox"><input type="checkbox" name="autresParties" value="comble"> comble</label>
+                    <label class="checkbox"><input type="checkbox" name="autresParties" value="terrasse" checked> terrasse</label>
+                    <label class="checkbox"><input type="checkbox" name="autresParties" value="balcon" checked> balcon</label>
+                    <label class="checkbox"><input type="checkbox" name="autresParties" value="loggia"> loggia</label>
+                    <label class="checkbox"><input type="checkbox" name="autresParties" value="jardin"> jardin</label>
+                  </div>
+                  <div class="field is-horizontal mt-1"> <!-- Use horizontal field -->
+                    <div class="field-label is-small mr-2"><label class="label">Autres :</label></div>
+                    <div class="field-body">
+                      <div class="field">
+                        <div class="control is-expanded">
+                           <input class="input" type="text" name="autresPartiesAutre" value="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Équipements de la partie privative :</strong></td>
+                <td><input class="input" type="text" name="equipPrivatif"
+                    value="Salle de douche (douche, lavabo), climatisation réversible, lit, bureau, armoire, fauteuil">
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Équipements de la partie collective :</strong></td>
+                <td><input class="input" type="text" name="equipCollectif"
+                    value="Cuisine équipée, plaque induction, four, lave vaisselle, lave linge, sèche-linge, climatisations reversibles, TV 4K">
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Modalité de production de chauffage :</strong></td>
+                <td>
+                  <label class="checkbox"><input type="radio" name="chauffageMode" value="individuel" checked>
+                    individuel</label>
+                  <label class="checkbox"><input type="radio" name="chauffageMode" value="collectif">
+                    collectif <sup>2</sup></label>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Modalité de production d'eau chaude sanitaire :</strong></td>
+                <td>
+                  <label class="checkbox"><input type="radio" name="eauChaudeMode" value="individuel" checked>
+                    individuel</label>
+                  <label class="checkbox"><input type="radio" name="eauChaudeMode" value="collectif">
+                    collectif <sup>3</sup></label>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Niveau de performance du logement</strong> [classe du diagnostic de
+                  performance énergétique] :</td>
+                <td><input class="input" type="text" name="dpeClasse" value="C"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="title is-6">B. Destination des locaux :</h3>
+        <div class="field">
+          <div class="control">
+            <label class="checkbox"><input type="radio" name="destinationLocaux" value="habitation" checked>
+              usage d'habitation</label>
+            <label class="checkbox"><input type="radio" name="destinationLocaux" value="mixte"> usage mixte
+              professionnel et d'habitation</label>
+          </div>
+        </div>
+
+        <h3 class="title is-6">C. Équipements et accessoires de l'immeuble à usage privatif du locataire :</h3>
+        <div class="field">
+          <label class="checkbox"><input type="checkbox" name="accessoiresPrivatifs" value="cave"> cave n°
+            <input type="text" class="input is-small" name="caveNum" size="4"></label>
+          <label class="checkbox"><input type="checkbox" name="accessoiresPrivatifs" value="parking"> parking
+            n° <input type="text" class="input is-small" name="parkingNum" size="4"></label>
+          <label class="checkbox"><input type="checkbox" name="accessoiresPrivatifs" value="garage"> garage n°
+            <input type="text" class="input is-small" name="garageNum" size="4"></label>
+          <label class="label is-small is-inline">Autres :</label> <input class="input is-inline" type="text"
+            name="accessoiresPrivatifsAutre" value="">
+        </div>
+
+        <h3 class="title is-6">D. Le cas échéant, locaux, parties, équipements et accessoires de l'immeuble à
+          usage commun :</h3>
+        <div class="field is-grouped is-grouped-multiline">
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns"
+                value="garage_velo" checked> garage à vélo</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns"
+                value="ascenseur"> ascenseur</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns"
+                value="espaces_verts" checked> espaces verts</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns"
+                value="aires_jeux"> aires et équipements de jeux</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns" value="laverie">
+              laverie</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns"
+                value="local_poubelle" checked> local poubelle</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="accessoiresCommuns"
+                value="gardiennage"> gardiennage</label></div>
+          <div class="control"><label class="label is-small is-inline">autres :</label> <input
+              class="input is-inline" type="text" name="accessoiresCommunsAutre" value=""></div>
+        </div>
+
+        <h3 class="title is-6">E. Équipement de réception télévisuel :</h3>
+        <div class="field">
+          <label class="checkbox"><input type="radio" name="receptionTV" value="hertzien"> hertzien</label>
+          <label class="checkbox"><input type="radio" name="receptionTV" value="numerique"> numérique</label>
+          <label class="checkbox"><input type="radio" name="receptionTV" value="satellite"> satellite</label>
+          <label class="checkbox"><input type="radio" name="receptionTV" value="internet" checked> par
+            internet</label>
+        </div>
+
+        <h3 class="title is-6">F. Équipement de réception internet:</h3>
+        <div class="field">
+          <label class="checkbox"><input type="radio" name="receptionInternet" value="cuivre"> cuivre</label>
+          <label class="checkbox"><input type="radio" name="receptionInternet" value="coaxial">
+            coaxial</label>
+          <label class="checkbox"><input type="radio" name="receptionInternet" value="satellite">
+            satellite</label>
+          <label class="checkbox"><input type="radio" name="receptionInternet" value="4G5G"> 4G/5G</label>
+          <label class="checkbox"><input type="radio" name="receptionInternet" value="fibre" checked> fibre
+            optique</label>
+        </div>
+
+        <div class="content small-text block footer-note">
+          Rappel : un logement décent doit respecter les critères minimaux de performance DPE suivants :
+          <ul>
+              <li><strong>France métropolitaine :</strong> Classe F (01/01/2025), Classe E (01/01/2028), Classe D (01/01/2034).</li>
+              <li><strong>Guadeloupe, Martinique, Guyane, La Réunion, Mayotte :</strong> Classe F (01/01/2028), Classe E (01/01/2031).</li>
+          </ul>
+          <p>La consommation d'énergie finale et le niveau de performance sont déterminés selon la méthode du DPE (art. L. 126-26 CCH).</p>
+        </div>
+      </section>
+      <!-- End of Section II -->
+
+      <section class="block">
+        <h2 class="title is-5">III. Date de prise d'effet et durée du contrat</h2>
+        <p class="block">La durée du contrat et sa date de prise d'effet sont ainsi définies :</p>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">A. Date de prise d'effet du contrat
+              :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="date" name="dateEffet" value="2024-05-01">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">B. Durée du contrat</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="dureeContrat"
+                  value="1 an (préavis de 1 mois minimum par RAR ou remise en main propre)"
+                  placeholder="[durée minimale d'un an ou de neuf mois si la location est consentie à un étudiant]">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content small-text block">
+          <p>A l'exception des locations consenties à un étudiant pour une durée de neuf mois, les contrats de
+            location de logements meublés sont reconduits tacitement à leur terme pour une durée d'un an et
+            dans les mêmes conditions. Le locataire peut mettre fin au bail à tout moment, après avoir donné
+            congé. Le bailleur peut, quant à lui, mettre fin au bail à son échéance et après avoir donné
+            congé, soit pour reprendre le logement en vue de l'occuper lui-même ou une personne de sa
+            famille, soit pour le vendre, soit pour un motif sérieux et légitime. Les contrats de locations
+            meublées consenties à un étudiant pour une durée de neuf mois ne sont pas reconduits tacitement
+            à leur terme et le locataire peut mettre fin au bail à tout moment, après avoir donné congé. Le
+            bailleur peut, quant à lui, mettre fin au bail à son échéance et après avoir donné congé.</p>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">C. Renouvellement du bail :</label></div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <label class="checkbox"><input type="radio" name="renouvellementBail" value="aucun">
+                  aucun</label>
+                <label class="checkbox"><input type="radio" name="renouvellementBail" value="tacite" checked>
+                  tacite</label>
+                <label class="checkbox"><input type="radio" name="renouvellementBail" value="formule">
+                  formulé (par avenant ou nouveau contrat)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End of Section III -->
+
+      <section class="block">
+        <h2 class="title is-5">IV. Conditions financières</h2>
+        <p class="block">Les parties conviennent des conditions financières suivantes :</p>
+
+        <h3 class="title is-6">A. Loyer initial</h3>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">1. Montant du loyer mensuel
+              <sup>4</sup>:</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="loyerMensuel" value="450" step="1"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="block">2. Le cas échéant, modalités particulières de fixation initiale du loyer applicables
+          dans les zones tendues <sup>5</sup></p>
+        <div class="content block">
+          <div class="field">
+            <label class="checkbox">
+              <input type="checkbox" name="loyerSoumisDecretEvo"> le loyer du logement objet du présent
+              contrat est soumis au décret fixant annuellement le montant maximum d'évolution des loyers à
+              la relocation
+            </label>
+          </div>
+          <div class="field">
+            <label class="checkbox">
+              <input type="checkbox" name="loyerSoumisReferenceMajore"> le loyer du logement objet du
+              présent contrat est soumis au loyer de référence majoré fixé par arrêté préfectoral
+            </label>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal"><label class="label">montant du loyer de référence :</label>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <div class="control"><input class="input" type="number" name="loyerReference" placeholder=""
+                    step="0.01"></div>
+                <div class="control"><span>€/m2</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal"><label class="label">montant du loyer de référence majoré
+                :</label></div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <div class="control"><input class="input" type="number" name="loyerReferenceMajore" placeholder=""
+                    step="0.01"></div>
+                <div class="control"><span>€/m2</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">3. le cas échéant, complément de loyer :</label>
+            <div class="control">
+              <textarea class="textarea" name="complementLoyerDetails" rows="2"
+                placeholder="[si un complément de loyer est prévu, indiquer le montant du loyer de base, nécessairement égal au loyer de référence majoré, le montant du complément de loyer et les caractéristiques du logement justifiant le complément de loyer]"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">4. Le cas échéant, informations relatives au loyer du dernier locataire
+            <sup>6</sup>:</label>
+          <div class="control">
+            <textarea class="textarea" name="loyerDernierLocataire" rows="2"
+              placeholder="[montant du dernier loyer acquitté par le précédent locataire, date de versement et date de la dernière révision du loyer]"></textarea>
+          </div>
+        </div>
+
+        <h3 class="title is-6">B. Modalités de révision</h3>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">1. Date de révision :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="date" name="dateRevision" value="2025-10-05"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">2. Date ou trimestre de référence de l'IRL
+              :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="trimestreIRL" value="T1 2025">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-6">C. Charges récupérables</h3>
+        <p class="block">1. Couverture des charges :</p>
+        <div class="field is-grouped is-grouped-multiline">
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="eau_froide" checked> Eau froide</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="eau_chaude" checked> Eau chaude</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="chauffage_clim" checked> Chauffage/Climatisation</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="electricite" checked> Electricité</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges" value="internet"
+                checked> Internet</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="tv_redevance" checked> Télévision/redevance audiovisuelle</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="assurance_batiment"> Assurance bâtiment/murs</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="assurance_locataire"> Assurance locataire (vol, responsabilité civile, risques
+              locatifs etc.)</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="menage_interieur"> Ménage intérieur (colocation)</label></div>
+          <div class="control"><label class="checkbox"><input type="checkbox" name="couvertureCharges"
+                value="menage_collectif" checked> Ménage des parties collectives (copropriété)</label>
+          </div>
+        </div>
+        <p class="block">2. Modalité de règlement des charges récupérables :</p>
+        <div class="field">
+          <label class="checkbox"><input type="radio" name="modeReglementCharges" value="provisions" checked>
+            Provisions sur charges avec régularisation annuelle</label>
+          <label class="checkbox"><input type="radio" name="modeReglementCharges" value="forfait"> Paiement
+            périodique des charges sans provision / Forfait de charges</label>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">3. Le cas échéant, montant des provisions
+              sur charges ou du forfait de charge :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="montantCharges" value="50" step="1"></div>
+              <div class="control"><span>€ / mois</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">4. Le cas échéant, modalités de révision du
+              forfait de charges<sup>7</sup>:</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="revisionForfaitCharges"
+                  value="Révision relative au changements de coûts effectifs des charges, au minimum proportionnelle à celle du loyer">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-6">D. Le bailleur souscrit à une assurance pour le compte des colocataires
+          <sup>8</sup>:
+        </h3>
+        <div class="field">
+          <label class="checkbox"><input type="radio" name="assuranceCompteLocataires" value="oui">
+            Oui</label>
+          <label class="checkbox"><input type="radio" name="assuranceCompteLocataires" value="non" checked>
+            Non</label>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">1. Montant total annuel récupérable
+              :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="montantAssuranceAnnuel" step="0.01"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">2. Montant récupérable par douzième
+              :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="montantAssuranceMensuel" step="0.01"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-6">E. Modalités de paiement</h3>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Périodicité du paiement <sup>10</sup>
+              :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="periodicitePaiement"
+                  value="mensuel (au douzième)"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Paiement :</label></div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <label class="checkbox"><input type="radio" name="typePaiement" value="echoir" checked>
+                  à échoir</label>
+                <label class="checkbox"><input type="radio" name="typePaiement" value="echu"> à terme
+                  échu</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Date ou période de paiement :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="datePaiement" value="5 de chaque mois"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Lieu de paiement :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="lieuPaiement" value="virement bancaire"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="block">Montant total dû à la première échéance de paiement pour une période complète de
+          location :</p>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Loyer (hors charges) :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="premiereEcheanceLoyer" value="450" step="1">
+              </div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Charges récupérables :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="premiereEcheanceCharges" value="50"
+                  step="1"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Contribution pour le partage des économies
+              de charges :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="premiereEcheanceContribution" value="0"
+                  step="1"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">En cas de colocation, à l'assurance
+              récupérable pour le compte des colocataires :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="premiereEcheanceAssurance" value="0"
+                  step="1"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-6">F. Si renouvellement du bail</h3>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">1. Montant de la réévaluation de loyer
+              mensuelle :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="reevaluationLoyer" step="1">
+              </div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">2. Modalité d'application annuelle de la
+              hausse :</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control"><input class="input" type="text" name="modaliteHausseLoyer" value="par tiers"
+                  placeholder="[par tiers ou par sixième selon la durée du contrat et le montant de la hausse de loyer]">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-6">G. Dépenses énergétiques (pour information)</h3>
+        <div class="field">
+          <label class="label">Montant estimé des dépenses annuelles d'énergie :</label>
+          <div class="control">
+            <textarea class="textarea is-small" name="depensesEnergetiques"
+              rows="3">500 euros (prix moyen du kwh 2023/2024 ref 22ct, hypothèse de consommation de 2500kWh pp. par an)</textarea>
+            <p class="help is-size-7">Montant estimé pour un usage standard de l'ensemble des usages
+              énumérés dans le diagnostic de performance énergétique (chauffage, refroidissement,
+              production d'eau chaude sanitaire, éclairage et auxiliaires...) mentionné à l'article L.
+              126-26 du code de la construction et de l'habitation. Estimation réalisée à partir des prix
+              énergétiques de référence de l'année : [année de référence]</p>
+          </div>
+        </div>
+      </section>
+      <!-- End of Section IV -->
+
+      <section class="block">
+        <h2 class="title is-5">V. Travaux</h2>
+        <div class="field">
+          <label class="label">A. Le cas échéant, montant et nature des travaux d'amélioration ou de mise en
+            conformité effectués depuis la fin du dernier contrat ou renouvellement <sup>11</sup> :</label>
+          <div class="control"><textarea class="textarea is-small" name="travauxAmeliorationRecents"
+              rows="2"></textarea></div>
+        </div>
+        <div class="field">
+          <label class="label">B. Majoration du loyer en cours de bail consécutive à des travaux
+            d'amélioration entrepris par le bailleur <sup>12</sup> :</label>
+          <div class="control"><textarea class="textarea is-small" name="travauxMajorationLoyer" rows="2"
+              placeholder="[nature des travaux, modalités d'exécution, délai de réalisation ainsi que montant de la majoration du loyer]"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">C. Le cas échéant, diminution de loyer en cours de bail consécutive à des
+            travaux entrepris par le locataire :</label>
+          <div class="control"><textarea class="textarea is-small" name="travauxDiminutionLoyer" rows="2"
+              placeholder="[durée de cette diminution et, en cas de départ anticipé du locataire, modalités de son dédommagement sur justification des dépenses effectuées]"></textarea>
+          </div>
+        </div>
+      </section>
+      <!-- End of Section V -->
+
+      <section class="block">
+        <h2 class="title is-5">VI. Garanties</h2>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Le cas échéant, montant du dépôt de garantie
+              <sup>*</sup>:</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="depotGarantie" value="450" step="1"></div>
+              <div class="control"><span>€</span></div>
+            </div>
+          </div>
+          <p class="help is-size-7">* inférieur ou égal à deux mois de loyers hors charges</p>
+        </div>
+      </section>
+      <!-- End of Section VI -->
+
+      <section class="content block">
+        <h2 class="title is-5">VII. Clause de solidarité</h2>
+        <p class="small-text">Dans le cadre de la colocation, chaque locataire signe un contrat individuel avec
+          le bailleur. Il n'existe pas de clause de solidarité entre les colocataires, ce qui signifie que
+          chaque locataire est uniquement responsable du paiement de son propre loyer, charges, et
+          accessoires. Les autres colocataires ne sont pas tenus de couvrir les obligations financières d'un
+          colocataire défaillant. Par conséquent, si un locataire quitte la colocation ou donne son congé,
+          cela n'affecte en rien les obligations des autres colocataires.</p>
+      </section>
+      <!-- End of Section VII -->
+
+      <section class="content block">
+        <h2 class="title is-5">VIII. Clause résolutoire</h2>
+        <p class="small-text">Modalités de résiliation de plein
+          droit du contrat : Le bail sera résilié de plein
+          droit en cas d'inexécution des obligations du locataire, soit en cas de défaut de paiement des
+          loyers et des charges locatives au terme convenu, de non-versement du dépôt de garantie, de défaut
+          d'assurance du locataire contre les risques locatifs, de troubles de voisinage constatés par une
+          décision de justice passée en force de chose jugée rendue au profit d'un tiers. Le bailleur devra
+          assigner le locataire devant le tribunal pour faire constater l'acquisition de la clause résolutoire
+          et la résiliation de plein droit du bail. Lorsque le bailleur souhaite mettre en œuvre la clause
+          résolutoire pour défaut de paiement des loyers et des charges ou pour non versement du dépôt de
+          garantie, il doit préalablement faire signifier au locataire, par acte de commissaire de justice, un
+          commandement de payer, qui doit mentionner certaines informations et notamment la faculté pour le
+          locataire de saisir le fonds de solidarité pour le logement. De plus, pour les bailleurs personnes
+          physiques ou les sociétés immobilières familiales, le commandement de payer doit être signalé par le
+          commissaire de justice à la commission de coordination des actions de prévention des expulsions
+          locatives dès lors que l'un des seuils relatifs au montant et à l'ancienneté de la dette, fixé par
+          arrêté préfectoral, est atteint. Le locataire peut, à compter de la réception du commandement,
+          régler sa dette, saisir le juge d'instance pour demander des délais de paiement, voire demander
+          ponctuellement une aide financière à un fonds de solidarité pour le logement. Si le locataire ne
+          s'est pas acquitté des sommes dues dans les six semaines suivant la signification, le bailleur peut
+          alors assigner le locataire en justice pour faire constater la résiliation de plein droit du bail.
+          En cas de défaut d'assurance, le bailleur ne peut assigner en justice le locataire pour faire
+          constater l'acquisition de la clause résolutoire qu'après un délai d'un mois après un commandement
+          demeuré infructueux. Cette clause est applicable uniquement au locataire concerné et n'affecte en
+          aucun cas les baux des autres colocataires, qui restent en vigueur indépendamment des manquements
+          d'un colocataire. Cette clause est applicable selon les modalités décrites au paragraphe 5.3.2.1. de
+          l'arrêté du 29 mai 2015 (notice annexée au present bail).</p>
+      </section>
+      <!-- End of Section VIII -->
+
+      <section class="block">
+        <h2 class="title is-5">IX. Le cas échéant, honoraires de location <sup>13</sup></h2>
+        <h3 class="title is-6">A. Dispositions applicables</h3>
+        <div class="content small-text">
+          <p>Il est rappelé les dispositions du I de l'article 5 (I) de la loi du 6 juillet 1989, alinéas 1 à
+            3 : « La rémunération des personnes mandatées pour se livrer ou prêter leur concours à
+            l'entremise ou à la négociation d'une mise en location d'un logement, tel que défini aux
+            articles 2 et 25-3, est à la charge exclusive du bailleur, à l'exception des honoraires liés aux
+            prestations mentionnées aux deuxième et troisième alinéas du présent I.</p>
+          <p>Les honoraires des personnes mandatées pour effectuer la visite du preneur, constituer son
+            dossier et rédiger un bail sont partagés entre le bailleur et le preneur. Le montant toutes
+            taxes comprises imputé au preneur pour ces prestations ne peut excéder celui imputé au bailleur
+            et demeure inférieur ou égal à un plafond par mètre carré de surface habitable de la chose louée
+            fixé par voie réglementaire et révisable chaque année, dans des conditions définies par décret.
+            Ces honoraires sont dus à la signature du bail.</p>
+          <p>Les honoraires des personnes mandatées pour réaliser un état des lieux sont partagés entre le
+            bailleur et le preneur. Le montant toutes taxes comprises imputé au locataire pour cette
+            prestation ne peut excéder celui imputé au bailleur et demeure inférieur ou égal à un plafond
+            par mètre carré de surface habitable de la chose louée fixé par voie réglementaire et révisable
+            chaque année, dans des conditions définies par décret. Ces honoraires sont dus à compter de la
+            réalisation de la prestation. »</p>
+        </div>
+        <p>Plafonds applicables :</p>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">- montant du plafond des honoraires
+              imputables aux locataires (visite, dossier, bail) :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="plafondHonorairesVisite" step="0.01"></div>
+              <div class="control"><span>€/m2</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">- montant du plafond des honoraires
+              imputables aux locataires (état des lieux) :</label></div>
+          <div class="field-body">
+            <div class="field has-addons">
+              <div class="control"><input class="input" type="number" name="plafondHonorairesEDL" step="0.01"></div>
+              <div class="control"><span>€/m2</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="title is-6">B. Détail et répartition des honoraires</h3>
+        <p>1. Honoraires à la charge du bailleur :</p>
+        <div class="field">
+          <label class="label is-small">- prestations de visite, dossier, bail :</label>
+          <div class="control"><textarea class="textarea" name="honorairesBailleurVisite" rows="1"
+              placeholder="[détail des prestations effectivement réalisées et montant TTC]"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label is-small">- Prestation de réalisation de l'état des lieux d'entrée :</label>
+          <div class="control"><textarea class="textarea" name="honorairesBailleurEDL" rows="1"
+              placeholder="[montant TTC]"></textarea></div>
+        </div>
+        <div class="field">
+          <label class="label is-small">- autres prestations :</label>
+          <div class="control"><textarea class="textarea" name="honorairesBailleurAutres" rows="1"
+              placeholder="[détail des prestations et conditions de rémunération]"></textarea></div>
+        </div>
+        <p>2. Honoraires à la charge du locataire :</p>
+        <div class="field">
+          <label class="label is-small">- prestations de visite, dossier, bail :</label>
+          <div class="control"><textarea class="textarea" name="honorairesLocataireVisite" rows="1"
+              placeholder="[détail des prestations effectivement réalisées et montant TTC]"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label is-small">- Prestation de réalisation de l'état des lieux d'entrée :</label>
+          <div class="control"><textarea class="textarea" name="honorairesLocataireEDL" rows="1"
+              placeholder="[montant TTC]"></textarea></div>
+        </div>
+      </section>
+      <!-- End of Section IX -->
+
+      <section class="block">
+        <h2 class="title is-5">X. Autres conditions particulières [A définir par les parties]</h2>
+        <div class="field">
+          <h3 class="title is-6" style="margin-left: 0;">Clause suspensive liée à la confirmation de période
+            d'essai et condition alternative de maintien</h3>
+          <div class="control">
+            <textarea class="textarea" name="clauseSuspensive" rows="10">Le présent contrat est conclu sous condition suspensive de la confirmation de l'engagement professionnel de Melek KILIC (la locataire) auprès de son employeur, sa période d'essai s'achevant le 6 mai 2024.
+
+1.  **Confirmation de l'emploi :** Si la locataire est confirmée dans son emploi, elle s'engage à en informer le bailleur par écrit avant le 8 mai 2024. La condition suspensive est alors levée et le contrat poursuit ses effets normalement.
+
+2.  **Non-confirmation ou rupture anticipée :** Si la période d'essai est rompue avant le 6 mai 2024 ou si l'emploi n'est pas confirmé à cette date, la locataire en informe immédiatement le bailleur. Deux options se présentent :
+    a.  **Maintien sous condition de garant :** La locataire peut choisir de maintenir le bail en fournissant au bailleur, avant le 31 mai 2024, un acte de cautionnement solidaire d'un ou plusieurs garants acceptés par le bailleur, couvrant l'intégralité des obligations du bail. Si cette condition est remplie, le contrat se poursuit normalement.
+    b.  **Résiliation du bail :** Si la locataire ne souhaite pas maintenir le bail ou ne fournit pas l'acte de cautionnement requis avant le 31 mai 2024, le contrat sera résilié de plein droit et sans indemnité à compter du 1er juin 2024. La locataire devra libérer les lieux et restituer les clés au plus tard le 5 juin 2024. Le dépôt de garantie sera restitué après déduction des éventuelles sommes dues, et le loyer sera dû au prorata de l'occupation effective.
+                 </textarea>
+          </div>
+        </div>
+        <!-- Placeholder for additional custom clauses -->
+        <div class="field">
+          <label class="label">Autres :</label>
+          <div class="control"><textarea class="textarea" name="autresConditions" rows="4"></textarea></div>
+        </div>
+      </section>
+      <!-- End of Section X -->
+
+      <section class="content block">
+        <h2 class="title is-5">XI. Annexes</h2>
+        <p>Sont annexées et jointes au contrat de location les pièces suivantes :</p>
+        <ul>
+          <li>A. Un extrait du règlement de copropriété concernant la destination de l'immeuble, la jouissance
+            et l'usage des parties privatives et communes, et précisant la quote-part afférente au lot loué
+            dans chacune des catégories de charges</li>
+          <li>B. Un plan de situation des parties collectives et privatives de la colocation du lot ci-dessus,
+            auquel est associé ce contrat</li>
+          <li>C. Un dossier de diagnostic technique comprenant
+            <ul>
+              <li>- un diagnostic de performance énergétique si disponible;</li>
+              <li>- un constat de risque d'exposition au plomb pour les immeubles construits avant le 1er
+                janvier 1949 ;</li>
+              <li>- le cas échéant, une copie d'un état mentionnant l'absence ou la présence de matériaux
+                ou de produits de la construction contenant de l'amiante <sup>14</sup> ;</li>
+              <li>- le cas échéant, un état de l'installation intérieure d'électricité et de gaz, dont
+                l'objet est d'évaluer les risques pouvant porter atteinte à la sécurité des personnes
+                <sup>15</sup> ;
+              </li>
+              <li>- le cas échéant, un état des risques naturels et technologiques pour le zones couvertes
+                par un plan de prévention des risques technologiques ou par un plan de prévention des
+                risques naturels prévisibles, prescrit ou approuvé, ou dans des zones de sismicité
+                <sup>16</sup>.
+              </li>
+            </ul>
+          </li>
+          <li>D. Une notice d'information relative aux droits et obligations des locataires et des bailleurs
+          </li>
+          <li>E. Un état des lieux, un inventaire et un état détaillé du mobilier <sup>17</sup></li>
+          <li>F. Le cas échéant, une autorisation préalable de mise en location <sup>18</sup></li>
+          <li>G. Le cas échéant, les références aux loyers habituellement constatés dans le voisinage pour des
+            logements comparables permettant la réévaluation du loyer <sup>19</sup></li>
+        </ul>
+      </section>
+      <!-- End of Section XI -->
+
+      <section class="signature-section block">
+        <div class="columns">
+          <div class="column">
+            <div class="field is-horizontal">
+              <div class="field-label is-normal"><label class="label">Le</label></div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control"><input class="input" type="date" name="signatureDate" value="2024-09-23"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field is-horizontal">
+              <div class="field-label is-normal"><label class="label">à</label></div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control"><input class="input" type="text" name="signatureLieu" value="Blois"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column signature-block">
+            <p><strong>Signature du bailleur ou mandataire</strong></p>
+            <span class="signature-line"></span>
+            <p><input type="text" class="input has-text-centered" name="signatureBailleurName" value="Paul de Renty"
+                readonly style="border:none;"></p>
+          </div>
+          <div class="column signature-block">
+            <p><strong>Signature du locataire</strong></p>
+            <span class="signature-line"></span>
+            <p><input type="text" class="input has-text-centered" name="signatureLocataireName" value="Melek KILIC"
+                readonly style="border:none;"></p>
+          </div>
+        </div>
+      </section>
+      <!-- End of Signatures -->
+
+      <section class="content footnotes small-text block">
+        <hr>
+        <p><sup>1</sup> Mention obligatoire s'appliquant aux professionnels exerçant une activité mentionnée à
+          l'article 1er de la loi n° 70-9 du 2 janvier 1970 réglementant les conditions d'exercice des
+          activités relatives à certaines opérations portant sur les immeubles et les fonds de commerce.</p>
+        <p><sup>2</sup> Si chauffage collectif, préciser les modalités de répartition de la consommation du
+          locataire.</p>
+        <p><sup>3</sup> Si chauffage collectif, préciser les modalités de répartition de la consommation du
+          locataire.</p>
+        <p><sup>4</sup> Lorsqu'un complément de loyer est appliqué, le loyer mensuel s'entend comme la somme du
+          loyer de base et de ce complément.</p>
+        <p><sup>5</sup> Zones d'urbanisation continue de plus de 50 000 habitants où il existe un déséquilibre
+          marqué entre l'offre et la demande de logements, entraînant des difficultés sérieuses d'accès au
+          logement sur l'ensemble du parc résidentiel telles que définies par décret.</p>
+        <p><sup>6</sup> Mention obligatoire si le précédent locataire a quitté le logement moins de dix-huit
+          mois avant la signature du bail.</p>
+        <p><sup>7</sup> Si les parties conviennent d'un forfait de charges et de sa révision annuelle, ce
+          forfait est révisé dans les mêmes conditions que le loyer principal.</p>
+        <p><sup>8</sup> Au cours de l'exécution du contrat de location et dans les conditions prévues par la loi
+          ALUR du 24 mars 2014, les colocataires peuvent provoquer la résiliation de l'assurance souscrite par
+          le bailleur pour leur compte.</p>
+        <p><sup>9</sup> Correspond au montant de la prime d'assurance annuelle, éventuellement majoré dans la
+          limite d'un montant fixé par décret en Conseil d'Etat.</p>
+        <p><sup>10</sup> Paiement mensuel de droit à tout moment à la demande du locataire.</p>
+        <p><sup>11</sup> Le cas échéant, préciser par ailleurs le montant des travaux d'amélioration effectués
+          au cours des six derniers mois.</p>
+        <p><sup>12</sup> Clause invalide pour les travaux de mise en conformité aux caractéristiques de décence ;</p>
+        <p><sup>13</sup> A mentionner lorsque le contrat de location est conclu avec le concours d'une personne
+          mandatée et rémunérée à cette fin.</p>
+        <p><sup>14</sup> A compter de l'entrée en vigueur du décret d'application listant notamment les
+          matériaux ou produits concernés.</p>
+        <p><sup>15</sup> A compter de la date d'entrée en vigueur de cette disposition, prévue par décret.</p>
+        <p><sup>16</sup> La liste des communes comprises dans ces zones est définie localement par arrêté
+          préfectoral.</p>
+        <p><sup>17</sup> Ces documents sont établis lors de la remise des clés, dont la date peut être
+          ultérieure à celle de conclusion du contrat.</p>
+        <p><sup>18</sup> Dispositif applicable dans certains territoires présentant une proportion importante
+          d'habitat dégradé délimité localement par l'établissement public de coopération intercommunale
+          compétent en matière d'habitat ou, à défaut, le conseil municipal (art. 92 de la loi n° 2014-366 du
+          24 mars 2014 pour l'accès au logement et un urbanisme rénové).</p>
+        <p><sup>19</sup> Lorsque la détermination du montant du loyer est la conséquence d'une procédure liée au
+          fait que le loyer précédemment appliqué était manifestement sous évalué.</p>
+      </section>
+      <!-- End of Footnotes -->
+
+      <!-- Simple static footer attempt - Consider @page for print footers -->
+      <footer class="footer has-text-centered is-size-7 no-print" style="padding: 1rem 1.5rem; background: none;">
+        <p>Contrat de location conforme à la loi ALUR de 2014, mis en application par le décret du 29 mai 2015 -
+          Paraphes: ______</p>
+      </footer>
+
+    </form> <!-- End of contractForm -->
+  </div> <!-- end container -->
+</body>
+
+</html>
