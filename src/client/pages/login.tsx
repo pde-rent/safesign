@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
-import { useAccount, useSignMessage, useDisconnect, useConnect, type Connector } from 'wagmi';
+import { getAccount, signMessage, disconnect, connect, watchAccount, type Connector } from '@wagmi/core';
+import { config, initializeWalletDiscovery, getDiscoveredWallets, type EIP6963ProviderDetail } from '../lib/wagmi.js';
 import { useRouter } from '../lib/router.js';
 import { api } from '../lib/api.js';
 import { useStore } from '../lib/store.js';
@@ -34,11 +35,37 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [connecting, setConnecting] = useState<string | null>(null);
+  const [discoveredWallets, setDiscoveredWallets] = useState<EIP6963ProviderDetail[]>([]);
 
-  const { address, isConnected } = useAccount();
-  const { signMessageAsync } = useSignMessage();
-  const { disconnect } = useDisconnect();
-  const { connectAsync, connectors } = useConnect();
+  const [address, setAddress] = useState<string | undefined>();
+  const [isConnected, setIsConnected] = useState(false);
+  
+  // Initialize wallet discovery and watch account changes
+  useEffect(() => {
+    const account = getAccount(config);
+    setAddress(account.address);
+    setIsConnected(account.isConnected);
+    
+    // Initialize EIP-6963 wallet discovery
+    initializeWalletDiscovery();
+    
+    // Update discovered wallets after a short delay
+    const timeout = setTimeout(() => {
+      setDiscoveredWallets(getDiscoveredWallets());
+    }, 200);
+    
+    const unwatch = watchAccount(config, {
+      onChange: (account) => {
+        setAddress(account.address);
+        setIsConnected(account.isConnected);
+      },
+    });
+    
+    return () => {
+      clearTimeout(timeout);
+      unwatch();
+    };
+  }, []);
 
   useEffect(() => {
     if (isConnected && address && !isAuthenticating) {
@@ -71,7 +98,7 @@ export const LoginPage = () => {
 
       // Sign the message
       console.log('Signing message:', message);
-      const signature = await signMessageAsync({ 
+      const signature = await signMessage(config, { 
         message: message
       });
 
@@ -82,7 +109,7 @@ export const LoginPage = () => {
     } catch (error) {
       console.error('Wallet authentication error:', error);
       setGlobalError(error instanceof Error ? error.message : 'Erreur d\'authentification avec le compte');
-      disconnect();
+      disconnect(config);
     } finally {
       setLoading(false);
       setIsAuthenticating(false);
@@ -90,29 +117,43 @@ export const LoginPage = () => {
   };
 
   const handleDisconnect = () => {
-    disconnect();
+    disconnect(config);
     setGlobalError('');
     setIsAuthenticating(false);
   };
 
-  const handleConnect = async (connector: Connector) => {
+  const handleConnectWallet = async (wallet: EIP6963ProviderDetail) => {
     if (!agreedToTerms) {
       setGlobalError('Veuillez accepter les conditions d\'utilisation');
       return;
     }
 
-    setConnecting(connector.id);
+    setConnecting(wallet.info.rdns);
     setGlobalError('');
     
     try {
-      await connectAsync({ connector });
-      console.log(`Connected to ${connector.name}`);
+      // Connect directly using the wallet's provider
+      const accounts = await wallet.provider.request({ 
+        method: 'eth_requestAccounts' 
+      });
+      
+      console.log(`Connected to ${wallet.info.name}:`, accounts[0]);
+      setAddress(accounts[0]);
+      setIsConnected(true);
+      
     } catch (err: any) {
       console.error('Connection error:', err);
-      setGlobalError(err.message || 'Échec de la connexion au compte');
+      setGlobalError(err.message || 'Échec de la connexion au wallet');
     } finally {
       setConnecting(null);
     }
+  };
+
+  const refreshWallets = () => {
+    initializeWalletDiscovery();
+    setTimeout(() => {
+      setDiscoveredWallets(getDiscoveredWallets());
+    }, 200);
   };
 
   const handleEmailAuth = async () => {
@@ -257,41 +298,70 @@ export const LoginPage = () => {
                 
                 {/* Web3 Section */}
                 <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-gray-700 text-center">Web3</h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-medium text-gray-700">Wallets détectés</h3>
+                    <button
+                      onClick={refreshWallets}
+                      className="text-xs text-blue-600 hover:text-blue-800 underline"
+                    >
+                      Actualiser
+                    </button>
+                  </div>
+                  
                   <div className="space-y-2">
-                    {connectors.map((connector) => {
-                      const isConnecting = connecting === connector.id;
-                      const icon = WALLET_ICONS[connector.name] || WALLET_ICONS['Injected'];
-                      
-                      return (
-                        <Button
-                          key={connector.id}
-                          variant="outline"
-                          className="w-full justify-start h-12 px-3 rounded-lg border hover:border-blue-300 transition-colors"
-                          onClick={() => handleConnect(connector)}
-                          disabled={!agreedToTerms || isConnecting}
-                        >
-                          <div className="flex items-center justify-between w-full">
-                            <div className="flex items-center space-x-3">
-                              <div className="w-8 h-8 bg-gray-50 rounded-md flex items-center justify-center overflow-hidden">
-                                <img
-                                  src={icon}
-                                  alt={connector.name}
-                                  className="object-contain w-6 h-6"
-                                  onError={(e) => {
-                                    (e.target as HTMLImageElement).src = WALLET_ICONS['Injected'];
-                                  }}
-                                />
+                    {discoveredWallets.length === 0 ? (
+                      <div className="text-center py-4 text-gray-500 text-sm">
+                        <p>Aucun wallet détecté.</p>
+                        <p className="mt-1">Installez une extension wallet et actualisez.</p>
+                      </div>
+                    ) : (
+                      discoveredWallets.map((wallet) => {
+                        const isConnecting = connecting === wallet.info.rdns;
+                        const fallbackIcon = WALLET_ICONS[wallet.info.name] || WALLET_ICONS['Injected'];
+                        
+                        return (
+                          <Button
+                            key={wallet.info.rdns}
+                            variant="outline"
+                            className="w-full justify-start h-12 px-3 rounded-lg border hover:border-blue-300 transition-colors"
+                            onClick={() => handleConnectWallet(wallet)}
+                            disabled={!agreedToTerms || isConnecting}
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-gray-50 rounded-md flex items-center justify-center overflow-hidden">
+                                  {wallet.info.icon ? (
+                                    <img
+                                      src={wallet.info.icon}
+                                      alt={wallet.info.name}
+                                      className="object-contain w-6 h-6"
+                                      onError={(e) => {
+                                        (e.target as HTMLImageElement).src = fallbackIcon;
+                                      }}
+                                    />
+                                  ) : (
+                                    <img
+                                      src={fallbackIcon}
+                                      alt={wallet.info.name}
+                                      className="object-contain w-6 h-6"
+                                    />
+                                  )}
+                                </div>
+                                <div className="text-left">
+                                  <span className="font-medium text-sm block">{wallet.info.name}</span>
+                                  {wallet.info.rdns.startsWith('legacy.') && (
+                                    <span className="text-xs text-gray-500">Legacy</span>
+                                  )}
+                                </div>
                               </div>
-                              <span className="font-medium text-sm text-left">{connector.name}</span>
+                              {isConnecting && (
+                                <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                              )}
                             </div>
-                            {isConnecting && (
-                              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-                            )}
-                          </div>
-                        </Button>
-                      );
-                    })}
+                          </Button>
+                        );
+                      })
+                    )}
                   </div>
                 </div>
 
@@ -308,6 +378,7 @@ export const LoginPage = () => {
                     </a>
                   </p>
                   <p>Avec l'email, nous dérivons une clé privée sécurisée pour vous.</p>
+                  <p className="text-green-600">✅ Bundle optimisé - EIP-6963 wallet detection</p>
                 </div>
               </div>
             ) : (

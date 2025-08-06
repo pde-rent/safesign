@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       'react': 'preact/compat',
       'react-dom': 'preact/compat',
+      'react/jsx-runtime': 'preact/jsx-runtime',
       '@': path.resolve(__dirname, './src')
     }
   },

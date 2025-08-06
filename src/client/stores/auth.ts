@@ -2,18 +2,26 @@ import { signal } from '@preact/signals';
 import type { User, ApiResponse } from '../../common/types.js';
 import { useStore } from '../lib/store.js';
 
+interface WalletConnection {
+  address: string;
+  walletName: string;
+  provider: any;
+}
+
 interface AuthState {
   user: User | null;
   token: string | null;
   isLoading: boolean;
   error: string | null;
+  walletConnection: WalletConnection | null;
 }
 
 const authState = signal<AuthState>({
   user: null,
   token: null,
   isLoading: false,
-  error: null
+  error: null,
+  walletConnection: null
 });
 
 export const authStore = {
@@ -182,5 +190,61 @@ export const authStore = {
 
   clearError(): void {
     authState.value = { ...authState.value, error: null };
+  },
+
+  // Wallet connection methods
+  setWalletConnection(connection: WalletConnection): void {
+    authState.value = { ...authState.value, walletConnection: connection };
+    
+    // Create a minimal user object for wallet connections
+    const walletUser: User = {
+      id: connection.address,
+      email: `${connection.walletName.toLowerCase().replace(/\s+/g, '')}@wallet.local`,
+      name: `${connection.walletName} User`,
+      role: 'user' as const,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    authState.value = {
+      ...authState.value,
+      user: walletUser,
+      token: `wallet_${connection.address}`, // Fake token for wallet auth
+    };
+    
+    // Also update the main store
+    useStore.getState().setAuth(walletUser, `wallet_${connection.address}`);
+  },
+
+  async disconnectWallet(): Promise<void> {
+    const connection = authState.value.walletConnection;
+    
+    if (connection?.provider && typeof connection.provider.disconnect === 'function') {
+      try {
+        await connection.provider.disconnect();
+      } catch (error) {
+        console.error('Wallet disconnect error:', error);
+      }
+    }
+    
+    // Clear wallet connection and auth state
+    authState.value = {
+      user: null,
+      token: null,
+      isLoading: false,
+      error: null,
+      walletConnection: null
+    };
+    
+    // Clear from main store too
+    useStore.getState().setAuth(null, null);
+  },
+
+  get walletConnection() {
+    return authState.value.walletConnection;
+  },
+
+  get isWalletConnected() {
+    return !!authState.value.walletConnection;
   }
 };
